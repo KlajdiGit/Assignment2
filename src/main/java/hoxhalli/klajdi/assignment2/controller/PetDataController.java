@@ -35,7 +35,7 @@ public class PetDataController {
     }
 
 
-    @GetMapping("/add-student")
+    @GetMapping("/add-pet")
     public ModelAndView addPet(){
         log.trace("addPet() is called");
         ModelAndView modelAndView = new ModelAndView(
@@ -87,19 +87,19 @@ public class PetDataController {
     }
 
     @GetMapping("/list-pets")
-    public ModelAndView listStudents() {
+    public ModelAndView listzpets() {
         log.trace("listPets() is called");
         List<PetData> list = petDataService.getAllPetForms();
         log.debug("list size = " + list.size());
-        return new ModelAndView("ListStudents",
-                "students", list);
+        return new ModelAndView("ListPets",
+                "pets", list);
     }
 
     @GetMapping("/delete-all")
     public String deleteAll(){
         log.trace("deleteAll() is called");
         petDataService.deleteAllPetForms();
-        return "redirect:list-students";
+        return "redirect:list-pets";
     }
 
     @GetMapping("pet-details/{id}")
@@ -109,7 +109,7 @@ public class PetDataController {
         try {
             PetData form = petDataService.getPetForm(Integer.parseInt(id));
             if (form != null) {
-                model.addAttribute("student", form);
+                model.addAttribute("pet", form);
                 return "PetDetails"; // show the student data in the form to edit
             } else {
                 log.trace("no data for this id=" + id);
@@ -138,7 +138,7 @@ public class PetDataController {
     }
 
     @PostMapping("/remove-pet")
-    public String removeStudent(@RequestParam String id) {
+    public String removePett(@RequestParam String id) {
         log.trace("removePet() is called");
         log.debug("id = " + id);
         try {
