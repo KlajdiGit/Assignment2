@@ -1,4 +1,4 @@
-INSERT INTO student
+INSERT INTO pet
 (pet_name,pet_kind, pet_sex, vaccinated)
 VALUES
 ('Jimmy','Bunny',1,true),
