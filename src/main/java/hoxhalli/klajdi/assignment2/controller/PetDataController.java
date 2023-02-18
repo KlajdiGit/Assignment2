@@ -26,6 +26,7 @@ public class PetDataController {
     private final PetDataService petDataService;
 
     public PetDataController(PetDataService petDataService){
+
         this.petDataService = petDataService;
     }
 
@@ -52,11 +53,17 @@ public class PetDataController {
                         Model model){
             log.trace("insertPet() is called");
             log.debug("form = " + form);
+        if (bindingResult.hasErrors()) {
+            log.trace("input validation errors");
+            model.addAttribute("kinds",kinds );
+            return "AddPet";
+        }else {
+            log.trace("the user inputs are correct");
+            petDataService.insertPetForm(form);
+            log.debug("id = " + form.getId());
+            return "redirect:confirm-insert/" + form.getId();
+        }
 
-                log.trace("the user inputs are correct");
-                petDataService.insertPetForm(form);
-                log.debug("id = " + form.getId());
-                return "redirect:confirm-insert/" + form.getId();
         }
 
     @GetMapping("/confirm-insert/{id}")
@@ -66,8 +73,9 @@ public class PetDataController {
             int id = Integer.parseInt(strId);
             log.trace("looking for the data in the database");
             PetData form = petDataService.getPetForm(id);
-                if(form == null)
+                if(form == null) {
                     log.trace("no data for this id=" + id);
+                }
                 log.trace("showing the data");
                 model.addAttribute("form", form);
                 return "ConfirmInsert";
@@ -122,7 +130,7 @@ public class PetDataController {
     }
 
     @PostMapping("/remove-pet")
-    public String removePett(@RequestParam String id) {
+    public String removePet(@RequestParam String id) {
         log.trace("removePet() is called");
         log.debug("id = " + id);
         petDataService.deletePetForm(Integer.parseInt(id));
