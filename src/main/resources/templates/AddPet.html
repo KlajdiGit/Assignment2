@@ -16,37 +16,43 @@
           th:action="@{insert-pet}" action="ConfirmInsert.html"
           th:object="${form}">
 
-        <div th:if="${#fields.hasErrors('*')}">
-            <h3 class="error">Input Errors</h3>
-            <ul>
-                <li th:each="e: ${#fields.errors('*')}" th:text="${e}"
-                    class="error">Input Error</li>
-            </ul>
-        </div>
+
         <h2>Pet Name</h2>
         <p>
-            <label for="first" class="group_label">First Name</label><br>
+            <label for="first" class="group_label">Pet Name</label><br>
             <input id="first" type="text" th:field="*{name}"/>
 
         </p>
 
-        <h2>Student Info</h2>
+        <h2>Pet Info</h2>
         <p>
             <label for="prog" class="group_label">Pet Kind</label><br>
             <select id="prog" th:field="*{petKind}">
-                <option th:each="p: ${kinds}" th:value="${p}" th:text="${p}">--- Select Program ---</option>
+                <option th:each="p: ${kinds}" th:value="${p}" th:text="${p}">--- Select Pet Kind ---</option>
             </select>
 
         </p>
+
+
+
         <p>
             <label class="group_label">Sex</label><br>
-
-
-            <label><input type="radio" name="petSex" value="0" >Female</label>
+            <span th:each="y: ${#numbers.sequence(0,1)}">
+               <label><input type="radio" name="petSex" value="0"
+                             th:field="*{petSex}" th:value="${y}"><span th:text="${y == 1}?'Male':'Female'">Male</span></label>
+            </span>
+            <!--/*-->
+            <label><input type="radio" name="petSex" value="0">Female</label>
             <label><input type="radio" name="petSex" value="1">Male</label>
-
+            <!--*/-->
 
         </p>
+
+        <p>
+            <label class="group_label">Vaccinated</label><br>
+            <label><input type="checkbox" th:field="*{vaccinated}" th:value="yes"/>Vaccinated</label>
+        </p>
+
 
         <p>
             <input type="reset" value="Clear"/>

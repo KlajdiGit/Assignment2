@@ -26,7 +26,7 @@ public class PetEntityJpa {
     private String petKind = "";
 
     @Column(name = "pet_sex")
-    private String petSex = "";
+        private int petSex = 0;
 
     @Column(name = "pet_vaccinated")
     private Boolean petVaccinated = false;

@@ -22,6 +22,7 @@ public class PetDataController {
             "---Select Kind---",
             "Cat", "Dog", "Rabbit" };
 
+
     private final PetDataService petDataService;
 
     public PetDataController(PetDataService petDataService){
@@ -51,43 +52,30 @@ public class PetDataController {
                         Model model){
             log.trace("insertPet() is called");
             log.debug("form = " + form);
-            if (bindingResult.hasErrors()) {
-                log.trace("input validation errors");
-                //model.addAttribute("form", form);
-                model.addAttribute("kinds", kinds);
-                return "AddPet";
-            } else {
+
                 log.trace("the user inputs are correct");
                 petDataService.insertPetForm(form);
                 log.debug("id = " + form.getId());
                 return "redirect:confirm-insert/" + form.getId();
-            }
         }
 
     @GetMapping("/confirm-insert/{id}")
     public String confirmInsert(@PathVariable(name = "id") String strId, Model model){
         log.trace("confirmInsert() is called");
         log.debug("id = " + strId);
-        try {
             int id = Integer.parseInt(strId);
             log.trace("looking for the data in the database");
             PetData form = petDataService.getPetForm(id);
-            if (form == null) {
-                log.trace("no data for this id=" + id);
-                return "DataNotFound";
-            } else {
+                if(form == null)
+                    log.trace("no data for this id=" + id);
                 log.trace("showing the data");
                 model.addAttribute("form", form);
                 return "ConfirmInsert";
-            }
-        } catch (NumberFormatException e) {
-            log.trace("the id in not an integer");
-            return "DataNotFound";
-        }
+
     }
 
     @GetMapping("/list-pets")
-    public ModelAndView listzpets() {
+    public ModelAndView listpets() {
         log.trace("listPets() is called");
         List<PetData> list = petDataService.getAllPetForms();
         log.debug("list size = " + list.size());
@@ -106,19 +94,15 @@ public class PetDataController {
     public String petDetails(@PathVariable String id, Model model){
         log.trace("petDetails() is called");
         log.debug("id = " + id);
-        try {
             PetData form = petDataService.getPetForm(Integer.parseInt(id));
             if (form != null) {
                 model.addAttribute("pet", form);
                 return "PetDetails"; // show the student data in the form to edit
             } else {
                 log.trace("no data for this id=" + id);
-                return "DataNotFound";
+                return "Error";
             }
-        } catch (NumberFormatException e) {
-            log.trace("the id is missing or not an integer");
-            return "DataNotFound";
-        }
+
     }
 
     @GetMapping("/delete-pet")
@@ -128,7 +112,7 @@ public class PetDataController {
             PetData form = petDataService.getPetForm(Integer.parseInt(id));
             if (form != null) {
                 model.addAttribute("pet", form);
-                return "DeletePet"; // ask "Do you really want to remove?"
+                return "DeletePet";
             } else {
                 return "redirect:list-pets";
             }
@@ -141,11 +125,8 @@ public class PetDataController {
     public String removePett(@RequestParam String id) {
         log.trace("removePet() is called");
         log.debug("id = " + id);
-        try {
-            petDataService.deletePetForm(Integer.parseInt(id));
-        } catch (NumberFormatException e) {
-            log.error("the id is missing or not an integer");
-        }
+        petDataService.deletePetForm(Integer.parseInt(id));
+
         return "redirect:list-pets";
     }
 
@@ -153,7 +134,6 @@ public class PetDataController {
     public String editPet(@RequestParam String id, Model model) {
         log.trace("editPet() is called");
         log.debug("id = " + id);
-        try {
             PetData form = petDataService.getPetForm(Integer.parseInt(id));
             if (form != null) {
                 model.addAttribute("form", form);
@@ -163,10 +143,7 @@ public class PetDataController {
                 log.trace("no data for this id=" + id);
                 return "redirect:list-pets";
             }
-        } catch (NumberFormatException e) {
-            log.trace("the id is missing or not an integer");
-            return "redirect:list-pets";
-        }
+
     }
 
 
@@ -177,10 +154,8 @@ public class PetDataController {
             Model model) {
         log.trace("updatePet() is called");
         log.debug("form = " + form);
-        // checking for the input validation errors
         if (bindingResult.hasErrors()) {
             log.trace("input validation errors");
-            //model.addAttribute("form", form);
             model.addAttribute("kinds", kinds);
             return "EditPet";
         } else {

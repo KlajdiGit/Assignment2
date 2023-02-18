@@ -15,13 +15,13 @@
   <form method="post"
         th:action="@{update-pet}" action="PetDetails.html"
         th:object="${form}">
-    <div th:if="${#fields.hasErrors('*')}">
+   <!-- <div th:if="${#fields.hasErrors('*')}">
       <h3 class="error">Input Errors</h3>
       <ul>
         <li th:each="e: ${#fields.errors('*')}" th:text="${e}"
             class="error">Input Error</li>
       </ul>
-    </div>
+    </div>-->
     <input type="hidden" th:field="*{id}">
     <h2>Pet Name</h2>
     <p>
@@ -41,9 +41,9 @@
     </p>
     <p>
       <label class="group_label">Sex</label><br>
-      <span th:each="y: ${#numbers.sequence(1,2)}">
-               <label><input type="radio" name="programYear" value="1"
-                             th:field="*{petSex}" th:value="${y}"><span th:text="${y}">Female</span></label>
+      <span th:each="y: ${#numbers.sequence(0,1)}">
+               <label><input type="radio" name="petSex" value="0"
+                             th:field="*{petSex}" th:value="${y}"><span th:text="*{PetSex()}">Female</span></label>
             </span>
       <!--/*-->
       <label><input type="radio" name="programYear" value="0">Female</label>

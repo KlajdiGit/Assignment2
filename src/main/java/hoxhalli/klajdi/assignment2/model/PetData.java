@@ -20,10 +20,16 @@ public class PetData implements Serializable {
     private String petKind = "";
 
     @NotNull
-
-    private String petSex = "Female";
+    @Min(0)
+    @Max(1)
+    private int petSex = 0;
 
     private boolean vaccinated = false;
 
-
+   public String PetSex(){
+       if ( this.petSex == 0)
+           return "Female";
+       else
+           return "Male";
+   }
 }
